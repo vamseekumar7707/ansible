@@ -1,0 +1,89 @@
+- hosts: backend
+  become: yes
+  tasks:
+  - name: Update
+    become: true
+    shell: sudo apt update
+
+  - name: Installs mysql
+    apt:
+      name: mysql-server
+      state: present
+
+  - name: Install git
+    apt:
+      name: git
+      state: present
+
+  - name: Clone a private repository into /ubuntu/home
+    git:
+      repo: https://github.com/vamseekumar7707/new_chatapp.git
+      clone: yes
+      version: master
+      dest: /new
+      accept_hostkey: yes
+          # ssh-agent doesn't allow key to pass through remote sudo commands
+
+  - name: Install python 3
+    apt:
+      name: python3
+      state: present
+
+  - name: Install lib
+    apt:
+      name: python3-dev
+      state: present
+  - name: Install build
+    apt:
+      name: build-essential
+      state: present
+
+  - name: Install pip3
+    apt:
+      name: python3-pip
+      state: present
+
+  - name: install python3-setuptools
+    apt:
+      name: python3-setuptools
+      state: present
+
+  - name: Install specified python requirements
+    pip:
+      requirements: /new/requirements.txt
+      state: present
+
+  - name: install pymysql
+    pip:
+      name: pymysql
+      state: present
+#  tasks:
+#    - name: Execute a command using the shell module
+#      become: true
+#      shell: sudo sed -i 's/mydb2/mydb/g' /ubuntu/home/fundoo/fundoo/settings.py
+
+#  - name: Execute a command change passwd using the shell module
+#    become: true
+#    shell: sudo sed -i 's/Vamsee2k20/vamsee2k20/g' /new/fundoo/fundoo/settings.py
+
+#  - name: Execute a command change passwd using the shell module
+#    become: true
+#    shell: sudo sed -i 's/admin/root/g' /new/fundoo/fundoo/settings.py
+
+#  - name: Execute a command change endpont using the shell module
+#    become: true
+#    shell: sudo sed -i 's//database.czsf3scdgn5n.ap-southeast-1.rds.amazonaws.com/g'  /new/fundoo/fundoo/settings.py
+
+  - name: Copy files to a remote machine
+    copy:
+      src: /ansible/django.service
+      dest: /etc/systemd/system/
+
+  - name: Execute a command for django.service shell module
+    become: true
+    shell: sudo systemctl start django.service
+
+  - name: Execute a command for django.service shell module
+    become: true
+    shell: sudo systemctl enable django.service
+
