@@ -1,0 +1,14 @@
+sudo apt update
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt update
+sudo apt-get upgrade
+	git python python-level python-pip openssl ansible
+sudo apt-get install git python3-pip openssl
+nano /etc/ansible/hosts
+	[demo]
+	10.0.0.187
+	10.0.0.226
+[defaults]
+host_key_checking=FALSE
+private_key_file = /home/ubuntu/nginxPY.pem
+#should make a file with nginxPY.pem in /home/ubuntu and paste the pem key content here
